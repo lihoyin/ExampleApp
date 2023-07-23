@@ -1,10 +1,7 @@
 package com.example.app.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -12,31 +9,25 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.app.R
 import com.example.app.data.Item
-import com.example.app.databinding.FragmentFirstBinding
+import com.example.app.databinding.FragmentHomeBinding
+import com.example.app.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class FirstFragment : Fragment(), ItemListListener {
+class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate),
+    ItemListListener {
 
-    private var _binding: FragmentFirstBinding? = null
-
-    private val binding get() = _binding!!
-    private val viewModel: FirstViewModel by viewModels()
+    private val viewModel: HomeViewModel by viewModels()
     private val itemListAdapter = ItemListAdapter(this)
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentFirstBinding.inflate(inflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.rvItemList.adapter = itemListAdapter
+        binding.fabAdd.setOnClickListener {
+            findNavController().navigate(R.id.action_HomeFragment_to_EditItemActivity)
+        }
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -47,12 +38,7 @@ class FirstFragment : Fragment(), ItemListListener {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     override fun onItemPressed(item: Item) {
-        findNavController().navigate(R.id.action_FirstFragment_to_SecondFragment)
+        findNavController().navigate(R.id.action_HomeFragment_to_DetailFragment)
     }
 }
