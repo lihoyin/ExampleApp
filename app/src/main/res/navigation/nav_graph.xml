@@ -2,36 +2,39 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
+    android:id="@+id/main_nav"
     app:startDestination="@id/HomeFragment">
 
-    <activity
-        android:id="@+id/EditItemActivity"
-        android:name="com.example.app.ui.edit.EditItemActivity"
-        android:label="@string/edit_item"
-        tools:layout="@layout/activity_edit_item" />
+    <action
+        android:id="@+id/action_to_DetailFragment"
+        app:destination="@id/DetailFragment">
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </action>
+
+    <action
+        android:id="@+id/action_to_EditFragment"
+        app:destination="@id/EditFragment">
+        <argument
+            android:name="id"
+            app:argType="integer"
+            android:defaultValue="-1"/>
+    </action>
 
     <fragment
         android:id="@+id/HomeFragment"
         android:name="com.example.app.ui.home.HomeFragment"
         android:label="@string/home"
-        tools:layout="@layout/fragment_home">
-
-        <action
-            android:id="@+id/action_HomeFragment_to_DetailFragment"
-            app:destination="@id/DetailFragment" />
-        <action
-            android:id="@+id/action_HomeFragment_to_EditItemActivity"
-            app:destination="@id/EditItemActivity" />
-    </fragment>
+        tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/DetailFragment"
         android:name="com.example.app.ui.detail.DetailFragment"
         android:label="@string/detail"
-        tools:layout="@layout/fragment_detail">
-
-        <action
-            android:id="@+id/action_DetailFragment_to_HomeFragment"
-            app:destination="@id/HomeFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_detail" />
+    <fragment
+        android:id="@+id/EditFragment"
+        android:name="com.example.app.ui.edit.EditFragment"
+        android:label="@string/edit"
+        tools:layout="@layout/fragment_edit" />
 </navigation>

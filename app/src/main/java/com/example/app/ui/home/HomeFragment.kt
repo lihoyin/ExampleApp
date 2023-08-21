@@ -7,8 +7,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import com.example.app.R
-import com.example.app.data.Item
+import com.example.app.MainNavDirections
+import com.example.app.data.model.Item
 import com.example.app.databinding.FragmentHomeBinding
 import com.example.app.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,11 +26,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.rvItemList.adapter = itemListAdapter
         binding.fabAdd.setOnClickListener {
-            findNavController().navigate(R.id.action_HomeFragment_to_EditItemActivity)
+            findNavController().navigate(MainNavDirections.actionToEditFragment())
         }
 
         lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
                 viewModel.items.collect {
                     itemListAdapter.submitList(it)
                 }
@@ -39,6 +39,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     }
 
     override fun onItemPressed(item: Item) {
-        findNavController().navigate(R.id.action_HomeFragment_to_DetailFragment)
+        findNavController().navigate(MainNavDirections.actionToDetailFragment(item.id))
     }
 }

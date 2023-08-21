@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.app.data.Item
+import com.example.app.data.model.Item
 import com.example.app.databinding.ListItemBinding
 
 class ItemListAdapter(private val listener: ItemListListener) :
