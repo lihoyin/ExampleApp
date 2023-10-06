@@ -22,12 +22,15 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class DetailFragment : BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::inflate),
+class DetailFragment :
+    BaseFragment<FragmentDetailBinding>(FragmentDetailBinding::inflate),
     MenuProvider {
     private val viewModel: DetailViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         requireActivity().addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
         return super.onCreateView(inflater, container, savedInstanceState)

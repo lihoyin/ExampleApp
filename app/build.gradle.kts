@@ -6,6 +6,13 @@ plugins {
     id("com.google.dagger.hilt.android")
 
     id("androidx.navigation.safeargs.kotlin")
+
+    id("io.gitlab.arturbosch.detekt") version("1.23.1")
+}
+
+detekt {
+    buildUponDefaultConfig = true
+    allRules = true
 }
 
 android {
@@ -60,6 +67,8 @@ dependencies {
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
     kapt("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
+
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1")
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("androidx.room:room-testing:$roomVersion")

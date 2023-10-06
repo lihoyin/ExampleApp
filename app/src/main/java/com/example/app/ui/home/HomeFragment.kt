@@ -15,7 +15,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate),
+class HomeFragment :
+    BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate),
     ItemListListener {
 
     private val viewModel: HomeViewModel by viewModels()
