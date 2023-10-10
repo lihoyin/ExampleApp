@@ -8,6 +8,8 @@ plugins {
     id("androidx.navigation.safeargs.kotlin")
 
     id("io.gitlab.arturbosch.detekt") version("1.23.1")
+
+    id("com.google.gms.google-services")
 }
 
 detekt {
@@ -58,6 +60,9 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.navigation:navigation-fragment-ktx:2.6.0")
     implementation("androidx.navigation:navigation-ui-ktx:2.6.0")
+
+    implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
+    implementation("com.google.firebase:firebase-analytics-ktx")
 
     implementation("com.google.dagger:hilt-android:2.44.2")
     kapt("com.google.dagger:hilt-android-compiler:2.44")

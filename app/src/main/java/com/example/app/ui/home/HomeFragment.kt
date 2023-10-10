@@ -2,6 +2,7 @@ package com.example.app.ui.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -11,6 +12,7 @@ import com.example.app.MainNavDirections
 import com.example.app.data.model.Item
 import com.example.app.databinding.FragmentHomeBinding
 import com.example.app.ui.base.BaseFragment
+import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -40,6 +42,11 @@ class HomeFragment :
     }
 
     override fun onItemPressed(item: Item) {
+        firebaseAnalytics.logEvent(
+            FirebaseAnalytics.Event.SELECT_ITEM,
+            bundleOf(FirebaseAnalytics.Param.ITEM_ID to item.id)
+        )
+
         findNavController().navigate(MainNavDirections.actionToDetailFragment(item.id))
     }
 }
