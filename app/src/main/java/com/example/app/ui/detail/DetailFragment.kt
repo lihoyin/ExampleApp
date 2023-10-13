@@ -19,6 +19,7 @@ import com.example.app.R
 import com.example.app.databinding.FragmentDetailBinding
 import com.example.app.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -41,7 +42,7 @@ class DetailFragment :
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.item?.collect {
+                viewModel.item.filterNotNull().collect {
                     (activity as AppCompatActivity).supportActionBar?.title = it.title
                     binding.tvDescription.text = it.description
                 }
@@ -56,7 +57,7 @@ class DetailFragment :
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.action_edit ->
-                findNavController().navigate(MainNavDirections.actionToEditFragment())
+                findNavController().navigate(MainNavDirections.actionToEditFragment(viewModel.item.value?.id ?: -1))
         }
         return false
     }

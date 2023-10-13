@@ -14,7 +14,7 @@ class ItemRepository @Inject constructor(
         appDatabase.itemDao().insert(item)
     }
 
-    fun findById(id: Int): Flow<Item>? {
-        return appDatabase.itemDao().findById(id)
+    fun findById(id: Int): Flow<Item?> {
+        return appDatabase.itemDao().get(id)
     }
 }
