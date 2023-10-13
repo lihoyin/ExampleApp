@@ -10,11 +10,14 @@ import android.view.ViewGroup
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.app.R
 import com.example.app.databinding.FragmentEditBinding
 import com.example.app.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class EditFragment : BaseFragment<FragmentEditBinding>(FragmentEditBinding::inflate), MenuProvider {
@@ -31,6 +34,17 @@ class EditFragment : BaseFragment<FragmentEditBinding>(FragmentEditBinding::infl
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
         menuInflater.inflate(R.menu.menu_edit, menu)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        lifecycleScope.launch {
+            viewModel.item.filterNotNull().collect {
+                binding.etTitle.setText(it.title)
+                binding.etDescription.setText(it.description)
+            }
+        }
     }
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
