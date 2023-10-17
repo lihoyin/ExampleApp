@@ -1,15 +1,12 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-
     kotlin("kapt")
     id("com.google.dagger.hilt.android")
-
     id("androidx.navigation.safeargs.kotlin")
-
     id("io.gitlab.arturbosch.detekt") version("1.23.1")
-
     id("com.google.gms.google-services")
+    id("com.google.devtools.ksp")
 }
 
 detekt {
@@ -29,6 +26,15 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += mapOf(
+                    "room.schemaLocation" to "$projectDir/schemas",
+                    "room.incremental" to "true"
+                )
+            }
+        }
     }
 
     buildTypes {
@@ -64,13 +70,13 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
     implementation("com.google.firebase:firebase-analytics-ktx")
 
-    implementation("com.google.dagger:hilt-android:2.44.2")
+    implementation("com.google.dagger:hilt-android:2.48.1")
     kapt("com.google.dagger:hilt-android-compiler:2.44")
 
     val roomVersion = "2.5.2"
     implementation("androidx.room:room-runtime:$roomVersion")
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
-    kapt("androidx.room:room-compiler:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
 
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1")
