@@ -59,6 +59,13 @@ android {
 }
 
 dependencies {
+    val roomVersion = "2.5.2"
+    val fragmentVersion = "1.6.1"
+
+    annotationProcessor("androidx.room:room-compiler:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1")
 
     implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -66,30 +73,30 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.navigation:navigation-fragment-ktx:2.6.0")
     implementation("androidx.navigation:navigation-ui-ktx:2.6.0")
-
     implementation(platform("com.google.firebase:firebase-bom:32.3.1"))
     implementation("com.google.firebase:firebase-analytics-ktx")
-
     implementation("com.google.dagger:hilt-android:2.48.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
-
-    val roomVersion = "2.5.2"
     implementation("androidx.room:room-runtime:$roomVersion")
-    annotationProcessor("androidx.room:room-compiler:$roomVersion")
-    ksp("androidx.room:room-compiler:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
+    implementation("androidx.test.ext:junit-ktx:1.1.5")
 
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.23.1")
+    kaptTest("com.google.dagger:hilt-android-compiler:2.44")
 
-    val mockkVersion = "1.13.8"
-    testImplementation("io.mockk:mockk:$mockkVersion")
-
+    testImplementation("io.mockk:mockk:1.13.8")
     testImplementation("org.junit.jupiter:junit-jupiter:5.9.3")
     testImplementation("androidx.room:room-testing:$roomVersion")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation("androidx.test.ext:junit:1.1.5")
     testImplementation("app.cash.turbine:turbine:1.0.0")
+    testImplementation("com.google.dagger:hilt-android-testing:2.44")
+
+    debugImplementation("androidx.fragment:fragment-testing:$fragmentVersion")
+
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.44")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.44")
 }
 
 kapt {
