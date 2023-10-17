@@ -40,9 +40,17 @@ class EditFragment : BaseFragment<FragmentEditBinding>(FragmentEditBinding::infl
         super.onViewCreated(view, savedInstanceState)
 
         lifecycleScope.launch {
-            viewModel.item.filterNotNull().collect {
-                binding.etTitle.setText(it.title)
-                binding.etDescription.setText(it.description)
+            viewModel.editState.filterNotNull().collect {
+                when (it) {
+                    EditState.Create -> {
+                        // do nothing
+                    }
+                    is EditState.Edit -> {
+                        binding.etTitle.setText(it.item.title)
+                        binding.etDescription.setText(it.item.description)
+                    }
+                    EditState.Invalid -> findNavController().popBackStack()
+                }
             }
         }
     }
