@@ -8,6 +8,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import com.example.app.BuildConfig
 import com.example.app.MainNavDirections
 import com.example.app.data.model.Item
 import com.example.app.databinding.FragmentHomeBinding
@@ -28,6 +29,7 @@ class HomeFragment :
         super.onViewCreated(view, savedInstanceState)
 
         binding.rvItemList.adapter = itemListAdapter
+        binding.tvVersion.text = BuildConfig.VERSION_NAME
         binding.fabAdd.setOnClickListener {
             findNavController().navigate(MainNavDirections.actionToEditFragment())
         }
