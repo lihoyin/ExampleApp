@@ -52,6 +52,7 @@ android {
         release {
             isDebuggable = false
             isMinifyEnabled = false
+            defaultConfig.versionName = version.name
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
