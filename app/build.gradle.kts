@@ -31,7 +31,8 @@ android {
         versionCode = version.code
         versionName = version.name
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.example.app.TestRunner"
+        testInstrumentationRunnerArguments["clearPackageData"] = "true"
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -47,12 +48,10 @@ android {
         debug {
             isDebuggable = true
             applicationIdSuffix = ".debug"
-            defaultConfig.versionName = "${version.name}-debug"
         }
         release {
             isDebuggable = false
             isMinifyEnabled = false
-            defaultConfig.versionName = version.name
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -69,6 +68,10 @@ android {
     buildFeatures {
         viewBinding = true
         buildConfig = true
+    }
+
+    testOptions {
+        execution = "ANDROIDX_TEST_ORCHESTRATOR"
     }
 }
 
@@ -111,6 +114,10 @@ dependencies {
     androidTestImplementation("androidx.test:runner:1.5.2")
     androidTestImplementation("androidx.test:rules:1.5.0")
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.44")
+    androidTestImplementation("androidx.test:core-ktx:1.5.0")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    androidTestUtil("androidx.test:orchestrator:1.4.2")
+
     kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.44")
 }
 
