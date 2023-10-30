@@ -7,6 +7,7 @@ plugins {
     id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
     id("com.google.devtools.ksp")
+    id("com.google.firebase.firebase-perf")
     kotlin("kapt")
 }
 
@@ -97,6 +98,7 @@ dependencies {
     implementation("androidx.room:room-runtime:$roomVersion")
     implementation("androidx.room:room-ktx:$roomVersion")
     implementation("androidx.test.ext:junit-ktx:1.1.5")
+    implementation("com.google.firebase:firebase-perf-ktx")
 
     kaptTest("com.google.dagger:hilt-android-compiler:2.44")
 
