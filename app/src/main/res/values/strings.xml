@@ -8,4 +8,8 @@
     <string name="home">Home</string>
     <string name="detail">Detail</string>
     <string name="edit">Edit</string>
+    <string name="select">Select</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="not_selected">Not selected</string>
 </resources>

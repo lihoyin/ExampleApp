@@ -9,6 +9,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("com.google.firebase.firebase-perf")
     kotlin("kapt")
+    kotlin("plugin.serialization") version "1.7.10"
 }
 
 detekt {
@@ -78,6 +79,7 @@ android {
 
 dependencies {
     val roomVersion = "2.5.2"
+    val ktorVersion = "2.3.5"
     val fragmentVersion = "1.6.1"
 
     annotationProcessor("androidx.room:room-compiler:$roomVersion")
@@ -99,6 +101,10 @@ dependencies {
     implementation("androidx.room:room-ktx:$roomVersion")
     implementation("androidx.test.ext:junit-ktx:1.1.5")
     implementation("com.google.firebase:firebase-perf-ktx")
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
 
     kaptTest("com.google.dagger:hilt-android-compiler:2.44")
 
