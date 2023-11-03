@@ -12,4 +12,5 @@
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
     <string name="not_selected">Not selected</string>
+    <string name="delete">Delete</string>
 </resources>

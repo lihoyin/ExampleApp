@@ -32,7 +32,7 @@
         app:layout_constraintTop_toBottomOf="@id/etTitle" />
 
     <ImageView
-        android:id="@+id/ivThumbnail"
+        android:id="@+id/ivTargetImage"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginTop="24dp"
@@ -41,14 +41,15 @@
         app:layout_constraintTop_toBottomOf="@id/etDescription" />
 
     <TextView
-        android:id="@+id/tvName"
+        android:id="@+id/tvTargetName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_weight="1"
         android:text="@string/not_selected"
-        app:layout_constraintLeft_toRightOf="@id/ivThumbnail"
-        app:layout_constraintTop_toTopOf="@id/ivThumbnail" />
+        app:layout_constraintBottom_toBottomOf="@id/ivTargetImage"
+        app:layout_constraintLeft_toRightOf="@id/ivTargetImage"
+        app:layout_constraintTop_toTopOf="@id/ivTargetImage" />
 
     <Button
         android:id="@+id/btnSelect"
@@ -56,5 +57,15 @@
         android:layout_height="wrap_content"
         android:text="@string/select"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/ivThumbnail" />
+        app:layout_constraintTop_toTopOf="@id/ivTargetImage" />
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="8dp"
+        android:text="@string/delete"
+        android:visibility="gone"
+        app:layout_constraintEnd_toStartOf="@id/btnSelect"
+        app:layout_constraintTop_toTopOf="@id/ivTargetImage" />
 </androidx.constraintlayout.widget.ConstraintLayout>

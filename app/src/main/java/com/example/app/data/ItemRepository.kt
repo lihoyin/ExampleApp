@@ -2,14 +2,11 @@ package com.example.app.data
 
 import com.example.app.data.local.ExampleDatabase
 import com.example.app.data.model.Item
-import com.example.app.data.model.Pokemon
-import com.example.app.data.remote.PokemonApi
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 class ItemRepository @Inject constructor(
-    private val database: ExampleDatabase,
-    private val api: PokemonApi
+    private val database: ExampleDatabase
 ) {
     val allItem: Flow<List<Item>> = database.itemDao().getAll()
 
@@ -21,17 +18,7 @@ class ItemRepository @Inject constructor(
         database.itemDao().update(item)
     }
 
-    fun findById(id: Int): Flow<Item?> {
-        return database.itemDao().get(id)
-    }
+    fun getItemFlowById(id: Int) = database.itemDao().getItemAsFlow(id)
 
-    suspend fun getPokemon(name: String): Pokemon {
-        val response = api.fetchPokemon(name)
-
-        return Pokemon(
-            id = response.id,
-            name = response.name,
-            image = response.sprites.frontDefault
-        )
-    }
+    suspend fun getItemById(id: Int) = database.itemDao().getItem(id)
 }

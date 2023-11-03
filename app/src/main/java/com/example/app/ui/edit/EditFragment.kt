@@ -10,11 +10,13 @@ import android.view.ViewGroup
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.MenuProvider
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.example.app.R
 import com.example.app.databinding.FragmentEditBinding
 import com.example.app.ui.base.BaseFragment
@@ -47,15 +49,21 @@ class EditFragment : BaseFragment<FragmentEditBinding>(FragmentEditBinding::infl
             AlertDialog.Builder(requireContext())
                 .setView(editText)
                 .setPositiveButton(R.string.confirm) { _, _ ->
-                    viewModel.selectPokemon(editText.text.toString())
+                    viewModel.selectTarget(editText.text.toString())
                 }
                 .setNegativeButton(R.string.cancel, null)
                 .create().show()
         }
 
+        binding.btnDelete.setOnClickListener { viewModel.clearTarget() }
+
         lifecycleScope.launch {
             viewModel.editState.filterNotNull().collect {
                 when (it) {
+                    EditState.Loading -> {
+                        // do nothing
+                    }
+
                     EditState.Create -> {
                         // do nothing
                     }
@@ -72,8 +80,10 @@ class EditFragment : BaseFragment<FragmentEditBinding>(FragmentEditBinding::infl
 
         lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.selectedPokemon.collect {
-                    binding.tvName.text = it?.name ?: resources.getText(R.string.not_selected)
+                viewModel.selectedTarget.collect {
+                    binding.tvTargetName.text = it?.name ?: resources.getText(R.string.not_selected)
+                    binding.ivTargetImage.load(it?.image)
+                    binding.btnDelete.isVisible = it != null
                 }
             }
         }

@@ -4,43 +4,54 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.app.data.ItemRepository
+import com.example.app.data.TargetRepository
 import com.example.app.data.model.Item
-import com.example.app.data.model.Pokemon
+import com.example.app.data.model.Target
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.mapLatest
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class EditViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val itemRepository: ItemRepository
+    private val itemRepository: ItemRepository,
+    private val targetRepository: TargetRepository
 ) : ViewModel() {
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val editState = when (val id = savedStateHandle.get<Int>("id")) {
-        null -> flowOf(EditState.Invalid)
-        -1 -> flowOf(EditState.Create)
-        else -> itemRepository.findById(id).mapLatest {
-            it?.let { EditState.Edit(it) } ?: EditState.Invalid
-        }
-    }.stateIn(
-        viewModelScope,
-        SharingStarted.Lazily,
-        null
-    )
+    private val _editState = MutableStateFlow<EditState>(EditState.Loading)
+    val editState = _editState.asStateFlow()
 
-    private val _selectedPokemon = MutableStateFlow<Pokemon?>(null)
-    val selectedPokemon = _selectedPokemon.asStateFlow()
+    private val _selectedTarget = MutableStateFlow<Target?>(null)
+    val selectedTarget = _selectedTarget.asStateFlow()
 
-    fun selectPokemon(name: String) {
+    init {
         viewModelScope.launch {
-            _selectedPokemon.value = itemRepository.getPokemon(name)
+            val state = when (val id = savedStateHandle.get<Int>("id")) {
+                null -> EditState.Invalid
+                -1 -> EditState.Create
+                else -> itemRepository.getItemById(id)?.let {
+                    EditState.Edit(it)
+                } ?: EditState.Invalid
+            }
+
+            state.takeIf { (it as? EditState.Edit)?.item?.targetId != null }?.let {
+                selectTarget(it.toString())
+            }
+
+            _editState.value = state
+        }
+    }
+
+    fun selectTarget(id: String) {
+        viewModelScope.launch {
+            _selectedTarget.value = targetRepository.getTarget(id)
+        }
+    }
+
+    fun clearTarget() {
+        viewModelScope.launch {
+            _selectedTarget.value = null
         }
     }
 
@@ -50,14 +61,16 @@ class EditViewModel @Inject constructor(
                 EditState.Create -> itemRepository.insert(
                     Item(
                         title = title,
-                        description = description
+                        description = description,
+                        targetId = selectedTarget.value?.id
                     )
                 )
 
                 is EditState.Edit -> itemRepository.update(
                     state.item.copy(
                         title = title,
-                        description = description
+                        description = description,
+                        targetId = selectedTarget.value?.id
                     )
                 )
 
@@ -71,4 +84,5 @@ sealed class EditState {
     object Create : EditState()
     data class Edit(val item: Item) : EditState()
     object Invalid : EditState()
+    object Loading : EditState()
 }
