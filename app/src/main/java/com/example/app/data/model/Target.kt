@@ -1,6 +1,6 @@
 package com.example.app.data.model
 
-data class Pokemon(
+data class Target(
     val id: Int,
     val name: String,
     val image: String?

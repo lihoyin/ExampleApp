@@ -3,12 +3,13 @@ package com.example.app.ui.edit
 import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import com.example.app.data.ItemRepository
+import com.example.app.data.TargetRepository
 import com.example.app.data.model.Item
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 class EditViewModelTest {
     private val savedStateHandle = mockk<SavedStateHandle>()
     private val itemRepository = mockk<ItemRepository>()
+    private val targetRepository = mockk<TargetRepository>()
 
     @Before
     fun setup() {
@@ -41,11 +43,12 @@ class EditViewModelTest {
             description = "description"
         )
         every { savedStateHandle.get<Int>("id") } returns 1
-        every { itemRepository.findById(1) } returns flowOf(expectedItem)
+        coEvery { itemRepository.getItemById(1) } returns expectedItem
 
         val editViewModel = EditViewModel(
             savedStateHandle = savedStateHandle,
-            itemRepository = itemRepository
+            itemRepository = itemRepository,
+            targetRepository = targetRepository
         )
 
         editViewModel.editState.test {
@@ -60,7 +63,8 @@ class EditViewModelTest {
 
         val editViewModel = EditViewModel(
             savedStateHandle = savedStateHandle,
-            itemRepository = itemRepository
+            itemRepository = itemRepository,
+            targetRepository = targetRepository
         )
 
         editViewModel.editState.test {
@@ -72,11 +76,12 @@ class EditViewModelTest {
     @Test
     fun `GIVEN invalid item id WHEN init THEN state is invalid`() = runTest {
         every { savedStateHandle.get<Int>("id") } returns 99
-        every { itemRepository.findById(99) } returns flowOf(null)
+        coEvery { itemRepository.getItemById(99) } returns null
 
         val editViewModel = EditViewModel(
             savedStateHandle = savedStateHandle,
-            itemRepository = itemRepository
+            itemRepository = itemRepository,
+            targetRepository = targetRepository
         )
 
         editViewModel.editState.test {

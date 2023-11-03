@@ -9,11 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuProvider
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.example.app.MainNavDirections
 import com.example.app.R
 import com.example.app.databinding.FragmentDetailBinding
@@ -48,6 +50,18 @@ class DetailFragment :
                 }
             }
         }
+
+        lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                viewModel.target.collect {
+                    binding.tvTargetName.isVisible = it != null
+                    binding.tvTargetName.text = it?.name
+
+                    binding.ivTargetImage.isVisible = it != null
+                    binding.ivTargetImage.load(it?.image)
+                }
+            }
+        }
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
@@ -57,7 +71,11 @@ class DetailFragment :
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when (menuItem.itemId) {
             R.id.action_edit ->
-                findNavController().navigate(MainNavDirections.actionToEditFragment(viewModel.item.value?.id ?: -1))
+                findNavController().navigate(
+                    MainNavDirections.actionToEditFragment(
+                        viewModel.item.value?.id ?: -1
+                    )
+                )
         }
         return false
     }

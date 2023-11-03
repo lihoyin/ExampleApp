@@ -1,25 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".ui.detail.DetailFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+    <TextView
+        android:id="@+id/tvDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Description" />
+    
+    <ImageView
+        android:id="@+id/ivTargetImage"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/placeholder"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvDescription" />
 
-        <TextView
-            android:id="@+id/tvDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="Description"
-            android:text=""
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.core.widget.NestedScrollView>
+    <TextView
+        android:id="@+id/tvTargetName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_weight="1"
+        android:text="@string/not_selected"
+        app:layout_constraintBottom_toBottomOf="@id/ivTargetImage"
+        app:layout_constraintLeft_toRightOf="@id/ivTargetImage"
+        app:layout_constraintTop_toTopOf="@id/ivTargetImage" />
+</androidx.constraintlayout.widget.ConstraintLayout>
